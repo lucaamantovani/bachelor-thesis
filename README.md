@@ -4,7 +4,7 @@ Tesi della laurea triennale per il corso di Ingeneria Informatica discussa il 21
 
 ## Ringraziamenti
 
-Ringrazio il mio relatore, l'ing. Claudia Canali, sempre pronta a darmi le giuste indicazioni in ogni fase della realizzazione dell’elaborato. 
+Ringrazio il mio relatore, l'Ing. Claudia Canali, sempre pronta a darmi le giuste indicazioni in ogni fase della realizzazione dell’elaborato. 
 Ringrazio infinitamente i miei genitori senza i quali non sarei mai potuto arrivare fin qua.
 Grazie per avermi sempre sostenuto in ogni mia decisione e per esserci sempre stati nei momenti più difficili, siete la mia più grande ispirazione.
 Ringrazio la Dott.ssa Serena Zuliani per la professionalità e l'umanità dimostratemi in un momento particolare della mia vita, le sarò per sempre riconoscente.
