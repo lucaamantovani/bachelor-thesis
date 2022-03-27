@@ -1,0 +1,651 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[10pt,a4paper]{article}
+\usepackage[affil-it]{authblk}
+
+
+% Adjusting margins to personal my need
+\addtolength{\oddsidemargin}{-.5in}
+\addtolength{\evensidemargin}{-.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1in}
+
+% Graphics
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[T1]{fontenc}
+\graphicspath{{figures/}}
+
+% Math
+\usepackage{amssymb}
+\usepackage{amsmath} % Required for some math elements 
+
+% Other
+\usepackage{algorithmic}
+\usepackage{array}
+\usepackage{lipsum}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Online Shoppers Intention \\
+\Large{Report per l'Esame di Fondamenti di Machine Learning}
+} % Title
+
+\author{\textsc{Luca Mantovani} \\
+    \emph{134982} \\
+    Ingegneria Informatica\\
+    \emph{257799@studenti.unimore.it}
+  }
+\date{Luglio 2021}
+\maketitle
+\clearpage
+
+\tableofcontents{}
+\clearpage
+
+\begin{abstract}
+\normalsize
+    Il progetto ha come obiettivo la realizzazione di un sistema di classificazione binario, incentrato sul prevedere la reale intenzione d'acquisto da parte di un acquirente all'interno del contesto online. \hfill \break
+    Attraverso lo studio del dataset e la  corretta applicazione di determinati algoritmi d'apprendimento automatico, si è venuto a concretizzazione un sistema in grado di effettuare la previsione in maniera dettagliata ed efficiente.
+\end{abstract}
+
+\clearpage
+\section{Introduzione}
+    Lo shopping online rappresenta una valida alternativa all’acquisto tradizionale, tanto che numerosi negozi fisici hanno aperto un e-commerce, ovvero un punto vendita virtuale.
+\hfill \break \break
+    Tra i principali vantaggi, si presenta la possibilità di avere a disposizione diverse alternative dello stesso prodotto, la capacità di poter monitorare da vicino il trasporto dello stesso e l'efficienza nelle transizioni e nei contratti.
+\hfill \break \break
+    Non mancano gli svantaggi, fattori non trascurabili che sono alla base dell'insicurezza provate dall'acquirente nel portare a termine l'acquisto.
+    Alcuni esempi possono essere l'impossibilità di testare un determinato prodotto prima dell'acquisto e il fatto che ci possa essere dell'incertezza circa i metodi di pagamento.
+\hfill \break \break
+    Esistono diverse sotto tipologie di business online con caratteristiche divergenti.
+    Tra le più note abbiamo:
+\begin{itemize}
+    \item B2B (Business to Business): si riferisce agli scambi commerciali tra aziende ed è di solito associata alle transizioni commerciali elettroniche che avvengono tra queste ultime.
+\end{itemize}
+\begin{itemize}
+    \item B2C (Business to Consumer): corrisponde alla vendita di beni e servizi, da parte di un'azienda, ai clienti (per uso personale)
+\end{itemize}
+\begin{itemize}
+    \item C2C (Consumer to Consumer): prevalentemente associato al mondo dell'e-commerce (Grazie a siti come Ebay, Etsy ecc...) si basa sul sistema delle aste e degli annunci per l'acquisto e la vendita dei prodotti tra gli utenti.
+\end{itemize}
+Un elemento fondamentale che ha permesso alle imprese commerciali di migliorare sotto l'aspetto dell'e-commerce è quello dell'advertising (ads), definibile come una forma di comunicazione di marketing utilizzata dalle aziende per promuovere i prodotti e/o servizi.
+Nel contesto online viene utilizzato per fornire messaggi promozionali attraverso metodi come:
+\begin{itemize}
+    \item Display Ads: advertising su siti Web, applicazioni oppure social media attraverso banner o altri formati di annunci fatti di testo, immagini, flash, e video
+\end{itemize}
+\begin{itemize}
+    \item Social Media Ads: Si tratta di un tipo di digital marketing che non è solo efficiente ma anche efficace. Molto simile agli annunci display, Social Media Ads può essere qualsiasi cosa, da un semplice banner o un’immagine di un auto-play video.
+\end{itemize}
+\begin{itemize}
+    \item SEO (Search Engine Optimization): È possibile utilizzare i motori di ricerca anche non a pagamento, pubblicando e ottimizzando il proprio sito web attraverso delle parole chiave. Più il sito è pertinente all’argomento specifico, più andrà a generare del traffico
+\end{itemize}
+\hfill \break 
+Il progetto è stato strutturato ripercorrendo le esperienze fatte dagli utenti e in correlazione agli elementi sopracitati, ovvero ipotizzando la partenza da un semplice banner pubblicitario (nel contesto degli advertisement) all'interno di una determinata pagina di un sito web, sino all'eventuale conferma d'acquisto del bene e/o servizio.
+\clearpage
+
+%----------------------------------------------------------------------------------------
+\section{Analisi dei Dati}
+Per effettuare un'approfondita analisi del dataset ed andarne a comprendere al meglio le caratteristiche, diventa di fondamentale importanza andare ad utilizzare determinate librerie a loro volta contenenti tutte una serie di funzioni necessarie per l'esplorazione del dataset. Nello specifico, vengono elencate le librerie utilizzate all'interno del progetto:
+
+\begin{itemize}
+    \item  \textbf{\emph{Pandas}}: (acronimo di "Panel Data") è stata ideata per la manipolazione e l'analisi dei dati, mette a disposizione strutture dati e in particolare operazioni numeriche, statistiche, d'indicizzazione ed aggregazione per quanto ne riguarda la manipolazione delle tabelle.
+   
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{\emph{NumPy}}: creata nel 2005, è stata strutturata per fornire supporto alle grandi matrici e agli array multidimensionali mediante l'ausilio di un collezione di funzioni matematiche programmate ad alto livello. Un principale punto di forza è la possibilità di poter lavorare sui vettori sfruttando le ottimizzazioni del calcolo vettoriale del processore che rende particolarmente efficienti i calcoli.
+\end{itemize}
+
+\begin{itemize}
+    \item  \textbf{\emph{Sklearn}}: mette a disposizione algoritmi d'apprendimento automatico per quanto ne riguarda gli ambienti di sviluppo in python. La stessa libreria è stata progettata per operare con NumPy in maniera efficiente ed ottimizzata.
+\end{itemize}
+
+\begin{itemize}
+    \item  \textbf{\emph{Matplotlib}}: libreria che consente la realizzazione di grafici 2d in diverse varianti. La stessa è stata sviluppata in python e le sue funzionalità la rendono adatta ad applicazioni di calcolo scientifico.
+    \begin{itemize}
+        \item \textbf{\emph{Pyplot}}: particolare sotto modulo stateful di matplotlib che utilizza funzioni command style per utilizzare le funzionalità della libreria padre in modalità interattiva
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{\emph{Seaborn}}: permette la creazione di grafici statistici ottimizzati mediante l'utilizzo di un API basata su set di dati che ne consente il confronto tra più variabili.
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[t]{0.4\textwidth}
+        \centering\includegraphics[width=0.5\linewidth]{pandas_logo.png}
+        \caption{Pandas}
+        \label{fig:multiple:example11}
+    \end{subfigure}
+    %
+    \begin{subfigure}[t]{0.4\textwidth}
+        \centering\includegraphics[width=0.6\linewidth]{FdML_Report/figures/NumPy_logo.png}
+        \caption{Matplotlib}
+        \label{fig:multiple:example12}
+    \end{subfigure}
+    %
+    \\
+    \begin{subfigure}[t]{0.4\textwidth}
+        \centering\includegraphics[width=0.7\linewidth]{sklearn_logo.png}
+        \caption{Sklearn}
+        \label{fig:multiple:example21}
+    \end{subfigure}
+    %
+    \begin{subfigure}[t]{0.4\textwidth}
+        \centering\includegraphics[width=0.4\linewidth]{FdML_Report/figures/mtpl_logo.png}
+        \caption{NumPy}
+        \label{fig:multiple:example22}
+    \end{subfigure}
+\end{figure}
+\clearpage
+
+%----------------------------------------------------------------------------------------
+\subsection{EDA (Exploration Data Analysis)}
+L'\textbf{Exporation Data Analysis} rappresenta quello che può essere definito come il primo e vero approccio diretto al dataset.
+Per definizione, parliamo di una tecnica utilizzata all'interno del campo di Data Science, rappresentata come un processo che opera attraverso una logica di tipo \emph{"trial and error"} e che mette a disposizione la possibilità del poter instaurare una conoscenza sempre maggiore del dataset.
+
+\subsubsection{Osservazione del dataset}
+La prima operazione che si va a svolgere è quella relativa l'analisi delle dimensioni e della struttura del dataset ed inseguito del tipo di dati presenti in essere al suo interno.
+Attraverso le funzioni  \textbf{\emph{pandas.describe()}} e \textbf{\emph{pandas.info()}} abbiamo ottenuto in maniera corrispettiva, le statistiche descrittive circa la tendenza centrale, la dispersione e la forma della distribuzione dei dati all'interno del dataset e in seguito, informazioni circa il dtype delle colonne seguito dall'identificativo delle stesse.
+Con l'utilizzo della funzione \textbf{\emph{pandas.head(n)}} è stata ricavata un'anteprima di tutti i valori delle prime n righe del dataset.
+
+\begin{figure}[ht]
+    \centering\includegraphics[width=1\linewidth]{pandas.head().png}
+    \caption{Output parziale della funzione pandas.head(n)}
+    \label{fig:example}
+\end{figure}
+
+All'interno del dataset, si presentano 12.330 istanze e 18 features. Da quanto è emerso circa le funzioni utilizzate in precedenza, i dati possono essere suddivisi in due macro categorie: Features Numeriche (Integer, Float) e Features Categoriche (Object, Boolean), con un rispettivo riferimento al tipo di dato visualizzato.
+
+\begin{table}[h] 
+\centering
+\begin{tabular}{l l}
+\hline
+\textbf{Feature} & \textbf{Descrizione}\\
+\hline
+Administration & Numero pagine Amministrative visitate dall'utente \\
+Admin. Duration & Secondi spesi dall'utente all'interno delle pagine amministrative \\
+Informational & Numero di pagine informative visitate dall'utente \\
+Info. Duration & Secondi spesi all'interno delle pagine informative \\
+Product Related & Numero di pagine correlate ai prodotti visitate dall'utente \\
+PR. Duration & Secondi spesi all'interno delle pagine correlate ai prodotti \\
+Bounce Rates & Valore medio di rimbalzo nelle pagine visitate dall'utente \\
+Exit Rates & Valore medio d'uscita dalle pagine visitate dall'utente \\
+Page Value & Valore medio della pagina visitata dall'utente  \\
+Special Day & Tempo di distacco dalle giornate speciali (Es. Black Friday) \\
+\hline
+\end{tabular}
+\caption{Features Numeriche}
+\label{tab:example}
+\end{table}
+
+E' possibile evidenziare che all'interno del dataset sono state messe a disposizione informazioni circa la il numero e la tipologia di pagina visualizzata, il tempo trascorso su ciascuna di esse, ed il tasso medio d'ingresso e di uscita.
+\hfill \break
+
+\begin{table}[h] 
+\centering
+\begin{tabular}{l l}
+\hline
+\textbf{Feature} & \textbf{Descrizione}\\
+\hline
+OperatingSystem & Sistema operativo in uso dall'utente \\
+Browser & Browser in uso dall'utente \\
+Region & Regione di provenienza della sessione \\
+TrafficType & Origine del traffico (es. banner, sms...) \\
+VisitorType & Tipologia di utente \\
+Weekend & Valore che indica se la sessione è stata struttura nel fine settimana \\
+Month & Mese all'interno del quale è stata instaurata la sessione \\
+Revenue & Valore che indica se l'acquisto è andato a buon fine \\
+\hline
+\end{tabular}
+\caption{Features Categoriche}
+\label{tab:example}
+\end{table}
+\break
+All'interno della seguente tabella vengono messe a disposizione informazioni di natura meno tecnica, come ad esempio il mese o il tipo di traffico, d'utilità non indifferente in quanto necessarie ai fini statistici per un'analisi circa eventuali sessioni atipiche nei confronti della maggioranza messa a disposizione nel dataset.
+
+\subsubsection{Correlazioni}
+Operazione fondamentale è il controllo della correlazione, definita come una misura statistica che esprime la relazione lineare tra due variabili ed è molto usata per descrivere semplici relazioni senza dover parlare di causa ed effetto. Attraverso l'utilizzo di una mappa a calore (heatmap) si sono venuti a presentare i seguenti risultati:
+
+\begin{figure}[ht]
+    \centering\includegraphics[width=1\linewidth]{FdML_Report/figures/Figure_1.png}
+    \caption{Rappresentazione grafica della matrice di correlazione}
+    \label{fig:example}
+\end{figure}
+
+Si constata una bassa correlazione tra le differenti features presenti all'interno del dataset.
+I casi di alta correlazione si presentano all'interno dei binomi: 
+\begin{itemize}
+    \item BounceRates - ExitRates (0.9)
+\end{itemize}
+\begin{itemize}
+    \item ProductRelated - ProductRelated\_Duration (0.9)
+\end{itemize}
+In alcuni casi, si presentano correlazioni moderate diversificate in alcune features come ad esempio l'administrative e l'informational.\hfill \break
+Attraverso l'ausilio di una pairplot, un tipo di plot all'interno del quale viene creata una griglia con determinate colonne del dataset che vengono poi confrontate a coppie per l'individuazione di possibili relazioni, è stato appurato il fatto che non vi è nessuna stretta correlazione circa la feature target "Revenue" e il numero di pagine (suddivise nelle sue tre varianti) visitate dall'utente.\hfill \break
+Quest'ultima analisi è stata effettuata ipotizzando che la tipologia della pagina potesse andare ad influenzare il percorso dell'utente verso l'acquisto finale.
+
+\begin{figure}[ht]
+    \centering\includegraphics[width=0.9\linewidth]{FdML_Report/figures/Figure_2.png}
+    \caption{Rappresentazione delle correlazioni con la feature target}
+    \label{fig:example}
+\end{figure}
+\clearpage
+
+\subsubsection{Feature Target}
+La realizzazione del sistema di classificazione binario basa la sua logica sull'analisi di una determinata feature all'interno del dataset, la \textbf{\emph{Revenue}}, che identifica se l'acquisto è stato effettuato con successo oppure non è stato portato a termine durante il corso della sessione.
+
+\begin{figure}[ht]
+    \centering\includegraphics[width=0.5\linewidth]{FdML_Report/figures/Figure_3.png}
+    \caption{Rappresentazione grafica della feature "Revenue"}
+    \label{fig:example}
+\end{figure}
+
+Dal grafico mostra un netto \textbf{\emph{sbilanciamento}} del dataset. Con il suddetto termine si fa riferimento al fatto che esiste una differenza molto elevata tra i valori positivi e negativi, un fattore che fa da sinonimo ad una distribuzione non uniforme dei dati.
+
+\subsubsection{Prestazioni pagine web}
+All'interno di questa sezione, si va ad analizzare l'impatto che il numero di pagine (nelle loro varie tipologie) ha avuto sul proseguo del percorso dell'utente verso l'acquisto finale al termine della sessione.
+
+\begin{figure}[ht]
+    \centering\includegraphics[width=1\linewidth]{FdML_Report/figures/RevenueWebPage.jpg}
+    \caption{Acquisti catalogati per il numero di pagine}
+    \label{fig:example}
+\end{figure}
+
+\begin{itemize}
+    \item Medialmente, gli utenti tendono a trascorrere meno tempo all'interno delle varie pagine se non si presenta la scelta concreta del portare a termine l'acquisto.
+\end{itemize} 
+\begin{itemize}
+    \item Gli utenti sono più inclini al visitare le pagine correlate ai prodotti piuttosto che quelle amministrative ed informative (nello specifico, quest'ultima registra i valori più bassi, sinonimo del fatto che l'approccio messo a punto all'interno della categoria per convincere l'utente a proseguire il percorso, risulti piuttosto inefficace)
+\end{itemize}
+\clearpage
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{FdML_Report/figures/Figure_6.png}
+  \end{center}
+  \caption{Distribuzione dei tassi medi}
+\end{wrapfigure}
+
+\hfill \break
+Di seguito, viene illustrato l'impatto che i tassi di rimbalzo, di uscita e il relativo numero della pagina hanno sul set di dati.
+
+\begin{itemize}
+    \item Il primo grafico prende in considerazione l'andamento delle visite in cui la pagina in esame è stata l’unica della sessione. Il secondo grafico rileva la distribuzione delle pagine viste in cui la pagina oggetto è stata l’ultima della sessione ed il terzo raffigura il numero medio di pagine visitate (in termini d'indicizzazione).
+\end{itemize}
+\begin{itemize}
+    \item Si può evincere che, i tassi d'uscita sono maggiori a discapito dei tassi di rimbalzo, cosa che può essere tradotta in un'alta interazione nei confronti della nostra pagina web da parte dell'utente, che tende a proseguire la sessione e a non terminarla alla prima pagina visitata.
+\end{itemize}
+
+\clearpage
+
+\subsubsection{Indagine sulle proprietà degli utenti}
+All'interno del dataset si presentano features incentrate su dettagli circa determinate proprietà dell'utente e del dispositivo in utilizzo per quanto ne riguarda le sessioni in esame. Gli attributi in questione, presentano una struttura categorica. \hfill \break 
+Il motivo dell'analisi si riconduce al fatto che, indipendentemente dal fine statistico, le suddette possono essere alla base dell'influenza circa la scelta di proseguire il percorso verso l'acquisto al termine della sessione.
+\hfill \break
+Nel grafico sottostante, che mette in comparazione il tipo di utente (che a sua volta si può presentare come un nuovo visitatore, un visitatore di ritorno oppure come un altro visitatore) e le features categoriche quali il sistema operativo, il browser, la regione d'appartenenza e il tipo di traffico, è possibile ricondursi alle seguenti considerazioni:
+\begin{itemize}
+    \item I sistemi operativi e  i browser presentano una struttura dominante dal punto di vista della distribuzione dei dati, con un netto sbilanciamento a favore di poche sotto categorie.
+\end{itemize}
+\begin{itemize}
+    \item Le regioni d'appartenenza mostrano un flusso diversificato dei dati ad eccezione di alcuni picchi denotabili, informazione che permette di capire quanto il dataset sia eterogeneo sotto il punto di vista geografico.
+\end{itemize}
+\begin{itemize}
+    \item Il tipo di traffico presenta una struttura relativamente eterogenea ma sbilanciata in quanto, per alcune sotto categorie, l'apporto all'interno del dataset è pressochè nullo.
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{FdML_Report/figures/Figure_7.png}
+    \caption{Revenue vs Features categoriche}
+    \label{fig:my_label}
+\end{figure}
+\clearpage
+
+L'ultima analisi effettuata all'interno del processo di esplorazione dei dati è il confronto tra la feature target, il mese e gli special day presenti all'interno del dataset.
+I grafici  mettono a disposizione la possibilità di risalire alle seguenti informazioni:
+\begin{itemize}
+    \item Mensilmente, buona parte degli acquisti viene effettuata a fine anno nonostante il numero di visite si appresti ad essere maggiore nei mesi antecedenti (come ad esempio il mese di marzo e di maggio).
+\end{itemize}
+\begin{itemize}
+    \item La maggior parte degli acquisti è stata effettuata in corrispondenza di un giorno speciale (come ad esempio il Black Friday, il Cyber Monday ecc...), mentre a distanza di pochi giorni, l'apporto dal punto di vista della transizioni si appresta a presentarsi in formato nullo (all'interno del dataset).
+\end{itemize}
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\linewidth]{FdML_Report/figures/Figure_9.png}
+    \caption{Acquisti correlati al mese delle sessioni}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\linewidth]{FdML_Report/figures/Figure_11.png}
+    \caption{Acquisti effettuati nei giorni speciali}
+    \label{fig:my_label}
+\end{figure}
+\clearpage
+
+\subsection{Data Pre-Processing, Training Set, Test Set}
+Con il termine Data Pre-Processing, si fa riferimento ad una serie di tecniche applicate all'interno del dataset, strutturate secondo operazioni di trasformazione e modellazione dei dati in un formato comprensibile e adatto al futuro processo di apprendimento automatico.\hfill \break
+In un primo momento, è stata effettuata la \textbf{codifica delle features categoriche}.\hfill \break
+I due principali metodi sono:
+\begin{itemize}
+    \item LabelEncoder()
+\end{itemize}
+\begin{itemize}
+    \item OneHotEncoding()
+\end{itemize}
+L'assenza di relazioni ordinali all'interno degli attributi d'interesse, genera una convergenza sulla scelta della \textbf{OneHotEncoding()}\hfill \break
+La funzione converte la variabile categorica in una rappresentazione numerica strutturata secondo un concetto binario.\hfill \break \break
+Per fronteggiare il problema dello sbilanciamento presentatosi durante l'esplorazione dei dati, è stata applicata un operazione di \textbf{downsampling}, basata sul diminuire (nel caso in esame) il numero di sessioni negative a discapito di quelle positive (in modo da controbilanciare la problematica).\hfill \break
+In seguito, è stato applicata l'operazione di \textbf{Feature Selection}, incentrata sul selezionare un sottoinsieme minimo di features, garantendo buone performance e una stima accurata del valori in fase predittiva. Il tutto è stato svolto seguendo un approccio di tipo \textbf{Filter (Chi-Quadro)}, che si basa sul filtrare le variabili più irrilevanti ed andarle ad  escludere in quanto ridondanti.\hfill \break
+Il dataset presenta range non uniformi, come ad esempio il numero della pagine visitate dall'utente e la durata trascorsa su di esse.\hfill \break
+Attraverso un'operazione di \textbf{Feature Scaling}, definibile come un insieme di trasformazioni per quanto ne riguarda la distribuzioni dei dati, è stato possibile eguagliare tali caratteristiche al fine di poterle comparare su uno stesso livello di importanza.\hfill \break
+Dal punto di vista pratico, sé fatto uso della funzione \textbf{MinMaxScaler()}, secondo la quale i dati vengono ridimensionati su un intervallo fisso [0,1].
+\hfill \break\break
+Al termine del data pre-processing, i dati sono pronti per essere utilizzati all'interno dell'algoritmo d'apprendimento.\hfill \break
+Si vanno a generare in seguito:
+
+\begin{itemize}
+    \item \textbf{Training set}: l'insieme di dati che vengono utilizzati per addestrare un sistema d'apprendimento (nel nostro caso un classificatore probabilistico)
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{Test set}: l'insieme degli esempi utilizzati per valutare le prestazioni del  sistema e per verificare eventuale overfitting con l'insieme di addestramento.
+\end{itemize}
+\clearpage
+
+\section{Discussione ed implementazione dei modelli }
+
+All'interno di questo capitolo, viene illustrato il processo inerente la scelta dei modelli, l'implementazione e l'ottimizzazione degli stessi.
+\hfill \break
+Il dataset è stato valutato nelle sue due varianti:
+\begin{itemize}
+    \item Raw Data: i dati presenti al suo interno non hanno subito trasformazioni.
+\end{itemize}
+\begin{itemize}
+    \item Processing Data: i dati sono stati ridimensionati attraverso l'ausilio delle tecniche di codifica, downsampling, feature scaling, feature selection e normalizzazione.
+\end{itemize}
+
+Gli algoritmi per l'analisi e l'apprendimento, sono stati scelti in riferimento alla distribuzione non uniforme dei dati e all'assenza di presupposti teorici circa un ipotetica sessione ideale dell'utente.
+In relazione a quanto è stato premesso, sono stati selezionati i seguenti modelli:
+\begin{itemize}
+    \item K-Nearest Neighbors
+\end{itemize}
+\begin{itemize}
+    \item Decision Tree
+\end{itemize}
+
+Ad entrambi è stato applicato un processo di \textbf{convalida incrociata} a sua volta definibile come un metodo statistico utilizzato per stimare l’abilità dei modelli di apprendimento.\hfill \break
+L'obiettivo è l'aumento dell'accuratezza e dell'efficacia.\hfill \break
+Il suo funzionamento si basa sul suddividere l'insieme dei dati in N parti uguali, andando ad utilizzare la N-esima parte come quella per la convalida e la rimanente come insieme d'addestramento.\hfill \break
+Il processo viene reiterato fino al termine delle possibili K combinazioni e il risultato sarà rappresentato dall'ottenimento circa la migliore configurazione degli \textbf{iperparametri}, ovvero parametri regolabili che consentono di controllare il processo di training del modello.
+
+\subsection{K-Nearest Neighbors}
+Il \textbf{K-Nearest Neighbors} si presenta come un algoritmo d'apprendimento supervisionato, ovvero strutturato per dataset contenti variabili basate sulla logica dell'etichetta.
+\hfill \break
+Il modello analizza i nuovi dati e li classifica in base alla distanza nel rispetto degli esempi presenti nel training set.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.3\linewidth]{FdML_Report/figures/KNN.png}
+    \caption{Esempio grafico del K-Nearest Neighbour}
+    \label{fig:my_label}
+\end{figure}
+
+Una delle caratteristiche principali dell'algoritmo è il fatto che \textbf{non} sia \textbf{parametrico}, ovvero che non faccia nessuna ipotesi circa la distribuzione dei dati che deve andare ad analizzare. \hfill \break
+La proprietà appena citata, rappresenta il motivo per il quale è stato scelto il modello in relazione al dataset in esame.
+Nella gestione dei parametri, sono stati presi in considerazione:
+
+\begin{itemize}
+    \item n-neighbors (k = 5): identifica il numero di data points più vicino.\hfill \break L’algoritmo valuta le k minime distanze così ottenute e la classe che ottiene il maggior numero di queste distanze viene scelta come previsione.
+    Per l'applicazione dell'algoritmo è stato mantenuto il valore di default come un buon compromesso dal punto di vista del rumore generato e del criterio di scelta circa la labilità della classe
+\end{itemize}
+
+\begin{itemize}
+    \item weight (uniform): identifica il peso ricoperto dal vicino durante la fase di classificazione del sample che in questo caso, appare uniforme per tutti gli elementi.
+\end{itemize}
+
+\clearpage
+
+\subsection{Decision Tree}
+ Il \textbf{Decision Tree}  è un classificatore con struttura ad albero dove ogni nodo verifica una condizione al di sopra di una particolare proprietà dell'ambiente. \hfill \break
+ A seconda dei risultati ottenuti in corrispondenza di un determinato nodo, il flusso procede verso una determina direzione.\hfill \break
+ La suddivisione del set in determinati sottogruppi, basa la sua logica secondo l'impurità dei nodi, rappresentanti le condizioni che devono essere verificate per il proseguo dell'algoritmo verso eventuali sotto-nodi o foglie.\hfill \break
+ Con il termine "impuro" identifichiamo un nodo che da come risultato più classi diverse e in maniera asimmetrica, con il termine "puro" quelli che producono una sola classe.
+ Tra i principali vantaggi troviamo il fatto che il modello sia di tipo predittivo e che si presti ad essere estremamente flessibile nell'analisi di dati numerici e categorici, caratteristica alla base della scelta per quanto ne riguarda l'applicazione all'interno del progetto.
+ 
+ 
+ \begin{figure}[ht]
+     \centering
+     \includegraphics[width=0.9\linewidth]{FdML_Report/figures/Decision Tree.png}
+     \caption{Flow-chart analitico del Decision Tree}
+     \label{fig:my_label}
+ \end{figure}
+ 
+ Nella gestione dei parametri, sono stati presi in considerazione:
+
+ \begin{itemize}
+     \item max-depth: indice che fa riferimento alla profondità dell'albero decisionale.\hfill \break
+     Per mantenere un equilibrio tra la precisione dei dati analizzati e la generalizzazione di eventuali nuovi valori è stato mantenuto il valore di default ("None") che garantisce l'espansione finché le foglie non sono pure.
+ \end{itemize}
+ 
+ \begin{itemize}
+     \item criterion: fa riferimento alla metrica di splitting ed attraverso la misurazione della qualità, determina la separazione dei dati.\hfill \break
+     Come tipologia, è stata scelta quella in riferimento all'impurita di Gini, struttura in un intervallo [0,1] dove il valore massimo (1) rappresenta una distribuzione randomica degli elementi all'interno delle classi e il valore minimo (0) il fatto che gli elementi appartengano tutti alla stessa classe.
+ \end{itemize}
+ \clearpage
+ 
+\subsection{Ensamble}
+ Il termine Ensamble indica un insieme di ipotesi che la macchina va ad elaborare.\hfill \break
+ L'obiettivo e la diminuzione degli errori in fase predittiva e il miglioramento della precisione nel calcolo dei valori.
+ A livello logico, vengono eseguiti molteplici modelli d'apprendimento ed in seguito viene tenuta valida la predizione con il maggior numero di correlazioni.
+ Naturalmente, la procedura presenta dei limiti.\hfill \break
+ Se il training set presenta al suo interno valori che si discostano dal vero, si possono venire a generare previsioni errate al termine dell'esecuzione degli algoritmi.\hfill \break
+ L'ensamble può essere applicato secondo tre differenti metodologie:
+ 
+\begin{itemize}
+    \item Bagging: si va a generare un insieme di classificatori con stessa importanza e all'atto classificatorio, l'output sarà rappresentato dalla classe con avente il maggior numero di voti.
+\end{itemize}
+
+\begin{itemize}
+    \item Boosting: ogni classificatore influisce sulla votazione finale con un certo peso (calcolato in base all'errore di accuratezza che ciascun modello commetterà in fase d'apprendimento).
+\end{itemize}
+
+
+\begin{itemize}
+    \item Stacking: viene introdotto un ulteriore classificatore, strutturato mediante una logica d'apprendimento correlata ad altri sotto-modelli.
+\end{itemize}
+ 
+\hfill \break
+La tecnica, basata secondo un approccio di tipo Bagging, è stata applicata ad entrambi gli algoritmi e nello specifico, alla variante che ha prodotto i risultati migliori.\hfill \break
+Per quanto ne riguarda il Decision Tree, l'algoritmo d'ensamble (denominato Random Forest) basa il suo funzionamento sull'andare ad approcciare più alberi e ad estrapolare la classe restituita con il maggior numero di correlazioni in riferimento alla previsioni fatte.\hfill \break
+L'ensamble del K-Nearest Neighbors funziona in maniera analoga, ovvero vengono eseguiti in contemporanea più algoritmi dello stesso tipo e viene scelta la classe con maggior correlazione all'interno dell'ambito predittivo.
+
+ \begin{figure}[ht]
+     \centering
+     \includegraphics[width=0.5\linewidth]{FdML_Report/figures/Random Forest.jpeg}
+     \caption{Flow-chart analitico del Random Forest}
+     \label{fig:my_label}
+ \end{figure}
+ \clearpage
+ 
+ \subsection{Parametri di valutazione}
+ La valutazione dei risultati di un determinato algoritmo è stata effettuata mediante l'analisi di particolari parametri:
+ 
+ \begin{itemize}
+     \item Accuracy: identifica la percentuale delle classificazioni corrette e viene calcolata come il rapporto tra i valori corretti (positivi e negativi) e l'insieme totale dei sample in esame
+ \end{itemize}
+ 
+ \begin{itemize}
+     \item Precision: rappresenta l’accuratezza con cui il sistema d'apprendimento automatico prevede le classi positive e viene definita come  come il rapporto tra i veri positivi e la somma dei veri positivi e i falsi positivi.
+ \end{itemize}
+ 
+ \begin{itemize}
+     \item Recall: indica il rapporto di istanze positive correttamente individuate dal sistema di apprendimento ed è calcolabile come il rapporto tra i veri positivi e il numero totale di osservazioni effettuate
+ \end{itemize}
+ 
+ \begin{itemize}
+     \item F1-Score: si presenta come una media armonica strutturata secondo l'utilizzo della precision e della recall. \hfill \break
+     Di conseguenza, all'interno del calcolo vengono presi in considerazione sia i falsi positivi che i falsi negativi.
+ \end{itemize}
+
+Nello specifico, andando ad analizzare le caratteristiche del dataset e potendo denotare il fatto che quest'ultimo di presenti con una struttura sbilanciata e con una distribuzione non omogenea dei valori, risulterebbe fuorviante andare ad utilizzare il parametro dell'accuracy per quanto ne riguarda la valutazione degli algoritmi.\hfill \break
+Il motivo si fonda sul fatto che il parametro si presta ad essere un ottimo valutatore solo in casi di dataset bilanciati.\hfill \break
+All'interno del progetto è stato utilizzato (come indicatore di valutazione) l'F1-score e la scelta ricade sulla rappresentazione concreta che questo indice è in grado di mettere a disposizione nel rispetto delle caratteristiche citate poco prima.
+Di seguito, la rappresentazione delle confusion matrix dei due algoritmi in esame, necessarie per la scelta del parametro di valutazione.
+
+ \begin{figure}[ht]
+     \centering
+     \includegraphics[width=0.8\linewidth]{FdML_Report/figures/ConfMatrix2.png}
+     \caption{Cofusion matrix con dati processati}
+     \label{fig:my_label}
+ \end{figure}
+
+\clearpage
+
+\section{Risultati}
+Al termine dell'implementazione dei sistemi d'apprendimento, nell'esecuzione degli stessi, si sono andati a registrare i seguenti valori, catalogati in riferimento al tipo di dato analizzato.
+\subsection{Dati Originali}
+Dati originali (senza iperparametri):\hfill \break
+Tempo di calcolo Decision Tree Classifier:  0.0362s\hfill \break
+Tempo di calcolo KNeighbors Classifier:     0.5118s\hfill \break
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllllll}
+Algoritmo                    & Accuracy & Precision & Recall   & F1-Score & AUC      &  &   \\
+Decision Tree Classification & 0.867619 & 0.544944  & 0.505208 & 0.524324 & 0.717    &  &   \\
+KNeighbors Classifier        & 0.859722 & 0.536913  & 0.208333 & 0.300188 & 0.589002 &  &   \\
+                             &          &           &          &          &          &  &  
+\end{tabular}
+\end{table}
+
+\hfill \break
+Dati originali (con iperparametri):\hfill \break
+Tempo di calcolo Decision Tree Classifier:  0.0072s\hfill \break
+Tempo di calcolo KNeighbors Classifier:     0.3030s\hfill \break
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllllll}
+Algoritmo                    & Accuracy & Precision & Recall   & F1-Score & AUC      &  &   \\
+Decision Tree Classification & 0.870252 & 0.535649  & 0.763021 & 0.629431 & 0.825686 &  &   \\
+KNeighbors Classifier        & 0.831516 & 0.409605  & 0.377604 & 0.392954 & 0.642868 &  &   \\
+                             &          &           &          &          &          &  &  
+\end{tabular}
+\end{table}
+\hfill \break
+Dalle due tabelle è possibile denotare come l'apporto degli iperparametri abbia aumentato di circa il 10\% l'efficacia della previsione stimata dai due modelli selezionati e che in contemporanea abbia diminuito in maniera leggermente significativa i tempi correlati al calcolo computazionale.\hfill\break
+\clearpage
+
+\subsection{Dati Processati}
+Dati Processati (senza iperparametri):\hfill \break
+Tempo di calcolo Decision Tree Classifier:  0.0275s\hfill \break
+Tempo di calcolo KNeighbors Classifier:     0.2161s\hfill \break
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllllll}
+Algoritmo                    & Accuracy & Precision & Recall   & F1-Score & AUC      &  &   \\
+Decision Tree Classification & 0.870714 & 0.549645  & 0.600775 & 0.574074 & 0.758639 &  &   \\
+KNeighbors Classifier        & 0.851602 & 0.454545  & 0.116279 & 0.185185 & 0.546305 &  &   \\
+                             &          &           &          &          &          &  &  
+\end{tabular}
+\end{table}
+\hfill \break
+Dati Processati (Con iperparametri):\hfill \break
+Tempo di calcolo Decision Tree Classifier:  0.0047s\hfill \break
+Tempo di calcolo KNeighbors Classifier:     0.1465s\hfill \break
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllllll}
+Algoritmo                    & Accuracy & Precision & Recall   & F1-Score & AUC      &  &   \\
+Decision Tree Classification & 0.888702 & 0.582418  & 0.821705 & 0.681672 & 0.860886 &  &   \\
+KNeighbors Classifier        & 0.795953 & 0.272727  & 0.244186 & 0.257669 & 0.566866 &  &   \\
+                             &          &           &          &          &          &  &  
+\end{tabular}
+\end{table}
+\hfill \break
+Il processing dei dati va ad impattare molto bene sull'algoritmo degli alberi decisionali a discapito del K-Nearest Neighbour che sembra non reagire nel migliore dei modi (in confronto a quanto visto con i dati originali). \hfill \break
+Gli iperparametri generano un apporto positivo circa l'aumento dell'accuratezza in riferimento alla previsione della classe finale, con un miglioramento del 12\% e del 7\% nei corrispettivi due modelli.
+
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[t]{0.4\textwidth}
+        \centering\includegraphics[width=1.1\linewidth]{FdML_Report/figures/DecisionTreePerformance.png}
+        \caption{Decision Tree Performance}
+        \label{fig:multiple:example11}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \centering\includegraphics[width=1.1\linewidth]{FdML_Report/figures/KNNPerformance.png}
+        \caption{K-Nearest Neighbour Performance.}
+        \label{fig:multiple:example12}
+    \end{subfigure}
+\end{figure}
+\clearpage
+\subsection{Ensamble Algoritmi}
+L'ensamble è stato applicato alle due tipologie di algoritmi nella loro configurazione di massima resa, ovvero:
+
+\begin{itemize}
+    \item Decision Tree con dati processati e iperparametri
+\end{itemize}
+\begin{itemize}
+    \item K-Nearest Neighbors con dati originali e iperparametri
+\end{itemize}
+I risultati ottenuti sono stati:
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllllll}
+Algoritmo                    & F1-Score & Std (deviazione standard)&  &   \\
+Random Forest Classification & 0.568   & 0.036    &  &   \\
+KNeighbors Classifier        & 0.313   & 0.028    &  &   \\
+                             &         &          &  &  
+\end{tabular}
+\end{table}
+
+\clearpage
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{Bibliografie}
+\bibitem{}
+        Silvia Cascianelli,
+        \textit{Dispense e Video Lezioni, Fondamenti di Machine Learning}.
+    \bibitem{}
+        Sito internet,
+        \textit{it.wikipedia.org}
+    \bibitem{}
+        Sito internet,
+        \textit{stackoverflow.com}
+    \bibitem{}
+        Sito internet,
+        \textit{lorenzogovoni.com}
+    \bibitem{}
+        Sito internet,
+        \textit{andreaminini.com}
+    \bibitem{}
+        Sito internet,
+        \textit{scikit-learn.org}
+    \bibitem{}
+        Sito internet,
+        \textit{pulplearning.altervista.org}
+    \bibitem{}
+        Sito internet,
+        \textit{webhouseit.com}
+    \bibitem{}
+        Sito internet,
+        \textit{towardsdatascience.com}
+    \bibitem{}
+        Sito internet,
+        \textit{machinelearningmastery.com}
+    
+\end{thebibliography}
+
+\end{document}

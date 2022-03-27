@@ -1,0 +1,248 @@
+%CLASSE DOCUMENTO - LINGUA E DIMENSIONE FONT
+\documentclass[corpo=13pt,numerazioneromana]{toptesi}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% INCLUSIONE PACCHETTI
+\usepackage[classica]{topfront}
+\usepackage[utf8]{inputenc} %utf8
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{blindtext}
+\usepackage{graphicx,wrapfig}
+\usepackage{booktabs}
+\usepackage{lmodern}
+\usepackage{varioref}
+\usepackage{url}
+\usepackage{array}
+\usepackage{paralist}{\obeyspaces\global\let =\space}
+\usepackage{verbatim}
+\usepackage{subfig}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage[pass]{geometry}
+\usepackage[figuresright]{rotating}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage[babel]{csquotes}
+\usepackage{hyperref}
+\usepackage[backend=biber,bibencoding=ascii]{biblatex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% CONFIGURAZIONE LINK E RIFERIMENTI
+\hypersetup{%
+    pdfpagemode={UseOutlines},
+    bookmarksopen,
+    pdfstartview={FitH},
+    colorlinks,
+    linkcolor={black}, %COLORE DEI RIFERIMENTI AL TESTO
+    citecolor={blue}, %COLORE DEI RIFERIMENTI ALLE CITAZIONI
+    urlcolor={blue} %COLORI DEGLI URL
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% CONFIGURAZIONE LISTATI/CODICE - CANCELLARE SE NON NECESSARIO
+% PYTHON - BIANCO E NERO
+\lstset{%
+	captionpos=b,
+	language=Python,
+	basicstyle =\small\ttfamily,
+	keywordstyle=\color{black}\bfseries,
+	breaklines=true,
+	breakatwhitespace=true,
+	frame=lines,
+	numbers=left,
+	numberstyle=\footnotesize,
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% FRENCHSPACING VA _SEMPRE_ ABILITATO PER DOCUMENTI IN ITALIANO
+\frenchspacing
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%DEFINIZIONE SEZIONI IN NUMERAZIONE ROMANA
+%ELENCO DEI LISTATI/CODICI
+\makeatletter
+\newcommand\listofcodes{%
+ \iffrontmatter\else\frontmattertrue\fi
+ \if@openright\cleardoublepage\else\clearpage\fi
+ % change the meaning of \chapter in a group
+ \begingroup\def\chapter##1{\@schapter}
+ \phantomsection % for the hyperlink
+ \addcontentsline{toc}{chapter}{Elenco dei listati}
+ \lstlistoflistings
+ \endgroup
+} 
+\makeatother
+
+\addto\captionsitalian{%
+  \renewcommand{\lstlistlistingname}{Elenco dei listati}%
+  \renewcommand{\lstlistingname}{Listato}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% INFORMAZIONI PDF - PERSONALIZZARE
+\pdfinfo{%
+  /Title    (Cubo cloud computing web content management system)
+  /Author   (Luca Mantovani)
+  /Subject  (Tesi di laurea sull'attività di tirocinio)
+  /Keywords (Cubo Laurea Tesi Ingegneria)
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% LISTA DEI CAPITOLI DA INCLUDERE - PERSONALIZZARE
+\includeonly{%
+chap_1,%
+chap_2,%
+chap_3,%
+chap_4,%
+chap_5,%
+}
+
+% FILE DI BIBLIOGRAFIA
+\addbibresource{bibliography.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% INIZIO DOCUMENTO
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% FRONTESPIZIO - PERSONALIZZARE
+% ELIMINATE LE VOCI CHE NON VI SERVONO
+
+% UNIVERSITA - NOME
+\ateneo{Università degli studi di Modena e Reggio Emilia}
+
+% FACOLTA - DICITURA - CANCELLARE O DECOMMENTARE
+\FacoltaDi{Dipartimento di Ingegneria "Enzo Ferrari"}
+% FACOLTA - NOME
+%\facolta{Ingegneria Informatica}
+
+% CORSO DI LAUREA - DICITURA (MANTENERE LO SPAZIO) - CANCELLARE O DECOMMENTARE
+\CorsoDiLaureaIn{Corso di Laurea in}
+% CORSO DI LAUREA - NOME
+\corsodilaurea{Ingegneria Informatica}
+
+% TIPOLOGIA TESI
+\TesiDiLaurea{Tesi di Laurea}
+
+% TITOLO
+\titolo{CUBO CLOUD COMPUTING WEB CONTENT MANAGEMENT SYSTEM}
+
+% SOTTOTITOLO
+\sottotitolo{Implementazione di un sistema per la gestione dei contenuti \break distribuito su infrastrutture cloud}
+
+% RELATORE - PROF. NOME E COGNOME
+\relatore{Claudia Canali}
+
+% TUTORE AZIENDALE - TITOLO NOME E COGNOME
+\tutoreaziendale{\break}
+% TUTORE AZIENDALE - DICITURA//AZIENDA
+\NomeTutoreAziendale{\break}
+
+% CANDIDATO - DICITURA (MANTENERE I DUE PUNTI) - CANCELLARE O DECOMMENTARE
+\CandidateName{Candidate:}
+
+% CANDIDATO - NOME E COGNOME
+\candidato{Luca Mantovani}
+
+% DATA - MESE ANNO
+\sedutadilaurea{Anno Accademico 2020/2021}
+
+\frontespizio
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%INTERLINEA - DEFAULT 1 - NON ESAGERATE, NON SUPERATE MAI 1.3 ;)
+\interlinea{1.35}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%RINGRAZIAMENTI
+\ringraziamenti
+Prima di procedere con la trattazione, vorrei dedicare qualche riga a tutti coloro che mi sono stati vicini in questo percorso di crescita personale.
+Innanzitutto, ringrazio il mio relatore, l'ing. Claudia Canali, sempre pronta a darmi le giuste indicazioni in ogni fase della realizzazione dell’elaborato. Ringrazio infinitamente i miei genitori senza i quali non sarei mai potuto arrivare fin qua. Grazie per avermi sempre sostenuto in ogni mia decisione e per esserci sempre stati nei momenti più difficili, siete la mia più grande ispirazione. Ringrazio la Dott.ssa Serena Zuliani per la professionalità e l'umanità dimostratemi in un momento particolare della mia vita, le sarò per sempre riconoscente. Ringrazio il Dott. Francesco Lotti per la sensibilità e la disponibilità con le quali ha prontamente deciso di prendermi in carico nel proseguo dei miei giorni. Ringrazio i miei amici, i miei compagni universitari e tutte le persone con le quali ho avuto modo di condividere emozioni, pensieri, parole e insicurezze, ve ne sarò per sempre grato. Infine, volevo ringraziare me stesso per il raggiungimento di questo grande traguardo e per aver portato al termine questo percorso con grande determinazione.
+
+
+
+% INDICE GENERALE
+\tableofcontents
+
+% INDICE DELLE FIGURE
+\listoffigures
+
+%INDICE DEL CODICE
+%\listofcodes
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mainmatter
+
+% INCLUSIONE FILE CAPITOLI - PERSONALIZZARE - TENERE COERENTE CON LISTA IN ALTO
+\include{chap_1}
+\include{chap_2}
+\include{chap_3}
+\include{chap_4}
+\include{chap_5}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% BIBLIOGRAFIA
+\begin{thebibliography}{9}
+\bibitem{}
+        Wikipedia.org,
+        \textit{Linguaggi di programmazione}.
+        \hfill\break
+    \bibitem{}
+        Redhat.com,
+        \textit{What are Application Programming language}
+        \hfill\break
+    \bibitem{}
+        Wikipedia.org,
+        \textit{Uniform Resource Locator}.
+        \hfill\break
+    \bibitem{}
+        Wikipedia.org,
+        \textit{Web Server Gateway Interface}.
+        \hfill\break
+    \bibitem{}
+        Wikipedia.org,
+        \textit{Metamodellazione}.
+        \hfill\break
+    \bibitem{}
+        Html.it,
+        \textit{L'ereditarietà multipla}.
+        \hfill\break
+    \bibitem{}
+        Wikipedia.org,
+        \textit{Sistema Informatico}.
+        \hfill\break
+    \bibitem{}
+        Wikipedia.org,
+        \textit{Cloud Computing}.
+        \hfill\break
+    \bibitem{}
+        Wikipedia.org,
+        \textit{Database Management System}.
+
+\end{thebibliography}
+
+\end{document}
